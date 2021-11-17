@@ -1,9 +1,10 @@
 <script>
 	import { keys } from './secrets/keys';
+	import Card from './components/Card.svelte';
 	import Header from './components/Header.svelte';
 	import LocationInput from './components/LocationInput.svelte';
 
-	let zipCode;
+	let weather;
 
 	const unit = 'imperial';
 
@@ -13,7 +14,7 @@
 		fetch(`https://api.openweathermap.org/data/2.5/weather?zip=${zipCode},us&units=${unit}&appid=${keys.API_KEY}`)
 			.then(response => response.json())
 			.then(data => {
-				console.log(data);
+				weather = data;
 			})
 			.catch(error => console.error(error));
 	}
@@ -27,6 +28,11 @@
 		<!-- 
 		<UnitSwitch />
 		<WeatherReport weather={weather} /> -->
+		{#if weather}
+			<Card>
+				<span slot="temp">{Math.round(weather.main.temp)} °F</span>
+			</Card>
+		{/if}
 	</main>
 </div>
 
