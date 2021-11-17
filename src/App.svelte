@@ -1,12 +1,22 @@
 <script>
 	import Header from './components/Header.svelte';
-	export let name;
+
+	let zipCode;
+
+	$: console.log(zipCode);
+
+	function search(event) {
+		if (event.keyCode === 13) {
+			console.log(zipCode + ' search');
+		}
+	}
 </script>
 
 <div>
 	<Header />
 	<main>
 		<div>The app goes here</div>
+		<input type="text" placeholder="Zip Code" bind:value={zipCode} on:keypress={search}/>
 		<!-- <LocationInput onSearch={handleSearch} />
 		<UnitSwitch />
 		<WeatherReport weather={weather} /> -->
