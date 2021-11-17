@@ -1,32 +1,27 @@
 <script>
-	import Component from './components/Component.svelte';
+	import Header from './components/Header.svelte';
 	export let name;
 </script>
 
-<main>
-	<h1>Hello {name}!</h1>
-	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
-	<Component prop="Hello" />
-</main>
+<div>
+	<Header />
+	<main>
+		<div>The app goes here</div>
+		<!-- <LocationInput onSearch={handleSearch} />
+		<UnitSwitch />
+		<WeatherReport weather={weather} /> -->
+	</main>
+</div>
 
 <style>
 	main {
-		text-align: center;
-		padding: 1em;
-		max-width: 240px;
-		margin: 0 auto;
+		min-height: 100vh;
+		background-image: linear-gradient(
+			to bottom,
+			rgba(0, 0, 0, 0.2),
+			rgba(0, 0, 0, 0.75)
+		);
+		padding: 25px;
 	}
 
-	h1 {
-		color: #ff3e00;
-		text-transform: uppercase;
-		font-size: 4em;
-		font-weight: 100;
-	}
-
-	@media (min-width: 640px) {
-		main {
-			max-width: none;
-		}
-	}
 </style>
