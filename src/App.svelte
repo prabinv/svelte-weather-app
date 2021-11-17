@@ -1,23 +1,30 @@
 <script>
+	import { keys } from './secrets/keys';
 	import Header from './components/Header.svelte';
+	import LocationInput from './components/LocationInput.svelte';
 
 	let zipCode;
 
-	$: console.log(zipCode);
+	const unit = 'imperial';
 
-	function search(event) {
-		if (event.keyCode === 13) {
-			console.log(zipCode + ' search');
-		}
+	let getWeather = (event) => {
+		const { detail: zipCode } = event;
+
+		fetch(`https://api.openweathermap.org/data/2.5/weather?zip=${zipCode},us&units=${unit}&appid=${keys.API_KEY}`)
+			.then(response => response.json())
+			.then(data => {
+				console.log(data);
+			})
+			.catch(error => console.error(error));
 	}
 </script>
 
 <div>
 	<Header />
 	<main>
-		<div>The app goes here</div>
-		<input type="text" placeholder="Zip Code" bind:value={zipCode} on:keypress={search}/>
-		<!-- <LocationInput onSearch={handleSearch} />
+		<!-- <input type="text" placeholder="Zip Code" bind:value={zipCode} on:keypress={search}/> -->
+		<LocationInput on:zipCodeEntered={getWeather} />
+		<!-- 
 		<UnitSwitch />
 		<WeatherReport weather={weather} /> -->
 	</main>
