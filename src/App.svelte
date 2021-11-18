@@ -18,9 +18,11 @@
 			})
 			.catch(error => console.error(error));
 	}
+
+	$: isCold = weather && weather.main.temp < 65;
 </script>
 
-<div>
+<div class="app" class:cold={weather && isCold} class:warm={weather && !isCold}>
 	<Header />
 	<main>
 		<!-- <input type="text" placeholder="Zip Code" bind:value={zipCode} on:keypress={search}/> -->
@@ -47,4 +49,17 @@
 		padding: 25px;
 	}
 
+	.app {
+		background-size: cover;
+		background-position: bottom;
+		transition: 0.4 ease;
+	}
+
+	.app.warm {
+		background-image: url("/assets/warm-bg.jpg");
+	}
+
+	.app.cold {
+		background-image: url("/assets/cold-bg.jpg");
+	}
 </style>
