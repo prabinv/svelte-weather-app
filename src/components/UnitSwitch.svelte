@@ -1,10 +1,8 @@
 <script>
-  import { Unit, UnitStore } from '../stores/UnitStore';
-
-  let isChecked = $UnitStore.unit === Unit.imperial;
+  import { Unit, WeatherStore, WeatherDerivedStore } from '../stores/WeatherStore';
 
   let handleToggle = (e) => {
-    UnitStore.set({
+    WeatherStore.set({
       unit: e.target.checked ? Unit.imperial : Unit.metric
     });
   }
@@ -16,7 +14,7 @@
   <span>
     <input
       class="switch-checkbox"
-      bind:checked={isChecked}
+      bind:checked={$WeatherDerivedStore.isImperial}
       on:change={handleToggle}
       id="switch-new"
       type="checkbox"

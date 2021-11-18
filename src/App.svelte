@@ -8,31 +8,27 @@
 	import LocationDisplay from './components/LocationDisplay.svelte';
 	import DateDisplay from './components/DateDisplay.svelte';
 	import UnitSwitch from './components/UnitSwitch.svelte';
-	import { Unit, UnitStore } from './stores/UnitStore';
+	import { WeatherStore, WeatherDerivedStore } from './stores/WeatherStore';
+	import { get } from 'svelte/store';
 	let weather;
-
-	const unit = 'imperial';
 
 	let getWeather = (event) => {
 		const { detail: zipCode } = event;
 
-		fetch(`https://api.openweathermap.org/data/2.5/weather?zip=${zipCode},us&units=${$UnitStore.unit}&appid=${keys.API_KEY}`)
+		fetch(`https://api.openweathermap.org/data/2.5/weather?zip=${zipCode},us&units=${$WeatherStore.unit}&appid=${keys.API_KEY}`)
 			.then(response => response.json())
 			.then(data => {
 				weather = data;
+				WeatherStore.set({
+					...get(WeatherStore),
+					weather,
+				});
 			})
 			.catch(error => console.error(error));
 	}
-
-	$: isCold = weather && (
-		($UnitStore.unit === Unit.imperial && weather.main.temp < 65) ||
-		($UnitStore.unit === Unit.metric && weather.main.temp < 10)
-	);
-
-	$: unitDisplay = $UnitStore.unit === Unit.imperial ? '°F' : '°C';
 </script>
 
-<div class="app" class:cold={weather && isCold} class:warm={weather && !isCold}>
+<div class="app" class:cold={weather && $WeatherDerivedStore.isCold} class:warm={weather && !WeatherDerivedStore.isCold}>
 	<Header />
 	<main>
 		<LocationInput on:zipCodeEntered={getWeather} />
@@ -42,7 +38,7 @@
 				<DateDisplay />
 				<LocationDisplay city={weather.name} country={weather.sys.country} />
 				<Card>
-					<span slot="temp">{Math.round(weather.main.temp)} {unitDisplay}</span>
+					<span slot="temp">{Math.round(weather.main.temp)} {$WeatherDerivedStore.unitDisplay}</span>
 				</Card>
 				<ConditionsDisplay {weather} />
 			</div>	
