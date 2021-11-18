@@ -1,14 +1,19 @@
 <script>
-  import { createEventDispatcher } from 'svelte';
+  import { createEventDispatcher, onMount } from 'svelte';
   
   const dispatch = createEventDispatcher();
   let zipCode = '';
+  let inputRef = null;
 
   let search = (event) => {
     if (event.keyCode === 13) {
       dispatch('zipCodeEntered', zipCode);
     }
   }
+
+  onMount(() => {
+    inputRef.focus();
+  });
 </script>
 
 <div class="search-box">
@@ -16,6 +21,7 @@
     type="text"
     class="search-bar"
     placeholder="Zipcode..."
+    bind:this={inputRef}
     bind:value={zipCode}
     on:keypress={search}
   />

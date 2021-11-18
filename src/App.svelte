@@ -1,4 +1,5 @@
 <script>
+	import { fade } from 'svelte/transition';
 	import { keys } from './secrets/keys';
 	import Card from './components/Card.svelte';
 	import Header from './components/Header.svelte';
@@ -33,13 +34,13 @@
 		<UnitSwitch />
 		<WeatherReport weather={weather} /> -->
 		{#if weather}
-		<div class="weather-box">
-			<DateDisplay />
-			<LocationDisplay city={weather.name} country={weather.sys.country} />
-			<Card>
-				<span slot="temp">{Math.round(weather.main.temp)} °F</span>
-			</Card>
-			<ConditionsDisplay {weather} />
+			<div class="weather-box" transition:fade>
+				<DateDisplay />
+				<LocationDisplay city={weather.name} country={weather.sys.country} />
+				<Card>
+					<span slot="temp">{Math.round(weather.main.temp)} °F</span>
+				</Card>
+				<ConditionsDisplay {weather} />
 			</div>	
 		{/if}
 	</main>
