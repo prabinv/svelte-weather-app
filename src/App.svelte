@@ -3,6 +3,9 @@
 	import Card from './components/Card.svelte';
 	import Header from './components/Header.svelte';
 	import LocationInput from './components/LocationInput.svelte';
+	import ConditionsDisplay from './components/ConditionsDisplay.svelte';
+	import LocationDisplay from './components/LocationDisplay.svelte';
+	import DateDisplay from './components/DateDisplay.svelte';
 
 	let weather;
 
@@ -25,15 +28,19 @@
 <div class="app" class:cold={weather && isCold} class:warm={weather && !isCold}>
 	<Header />
 	<main>
-		<!-- <input type="text" placeholder="Zip Code" bind:value={zipCode} on:keypress={search}/> -->
 		<LocationInput on:zipCodeEntered={getWeather} />
 		<!-- 
 		<UnitSwitch />
 		<WeatherReport weather={weather} /> -->
 		{#if weather}
+		<div class="weather-box">
+			<DateDisplay />
+			<LocationDisplay city={weather.name} country={weather.sys.country} />
 			<Card>
 				<span slot="temp">{Math.round(weather.main.temp)} °F</span>
 			</Card>
+			<ConditionsDisplay {weather} />
+			</div>	
 		{/if}
 	</main>
 </div>
@@ -61,5 +68,9 @@
 
 	.app.cold {
 		background-image: url("/assets/cold-bg.jpg");
+	}
+
+	.weather-box {
+		text-align: center;
 	}
 </style>
